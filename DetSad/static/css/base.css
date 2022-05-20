@@ -1,0 +1,11 @@
+.b-left{
+    width:20%;
+    float:left;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.b-right{
+    width:80%;
+    float:right;
+}

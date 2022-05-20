@@ -1,0 +1,31 @@
+.b-left{
+    width:20%;
+    float:left;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.b-right{
+    width:80%;
+    float:right;
+}
+
+img {
+    height: 100px;
+    width: 100px;
+   }
+
+li {
+    list-style-type: none;
+   }
+
+ul {
+    margin-left: 0;
+    padding-left: 0;
+   }
+
+h5 {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+   }
