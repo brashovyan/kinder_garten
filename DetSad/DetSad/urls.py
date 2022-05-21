@@ -18,4 +18,5 @@ urlpatterns = [
     path('add_parent/', views.add_parent, name='add_parent'),
     path('add_section/', views.add_section, name='add_section'),
     path('add_organization/', views.add_organization, name='add_organization'),
+    path('add_garten/', views.add_garten, name='add_garten'),
 ]
