@@ -19,7 +19,7 @@ def index(request):
             return render(request, 'mainapp/parent_profile.html', {'person': request.user})
 
         elif User.objects.filter(pk=request.user.id, groups__name='Admin_garten').exists():
-            return render(request, 'mainapp/parent_profile.html', {'person': request.user})
+            return render(request, 'mainapp/garten_profile.html', {'person': request.user})
 
         else:
             return HttpResponseRedirect('/login')
@@ -155,6 +155,126 @@ def sections(request):
         return render(request, 'mainapp/sections.html', {'sections': sections})
     else:
         return HttpResponseRedirect('/login')
+
+
+def load_childs(request):
+    if request.user.is_authenticated:
+        gartens = Garten.objects.all()
+        ld = {}
+
+        for garten in gartens:
+            s = 0
+            for child in Child.objects.filter(garten=garten):
+                for section in child.sections.all():
+                    s += section.load
+            sr = s/len(Child.objects.filter(garten=garten))
+            ld[garten.id]=sr
+
+        return render(request, 'mainapp/load_childs.html', {'gartens':gartens, 'ld':ld})
+    else:
+        return HttpResponseRedirect('/login')
+
+
+def garten_search(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            ser = request.POST.get('search')
+            result = []
+
+            gartens = Garten.objects.all()
+            for garten in gartens:
+                if ser.title() in str(garten.title).title() or ser in str(garten.number).title():
+                    if garten not in result:
+                        result.append(garten)
+
+            return render(request, 'mainapp/garten_search.html', {'result':result})
+        else:
+            return render(request, 'mainapp/garten_search.html')
+    else:
+        return HttpResponseRedirect('/login')
+
+
+def garten(request, id):
+    if request.user.is_authenticated:
+        garten = Garten.objects.get(id=id)
+        childs = Child.objects.filter(garten=garten)
+        return render(request, 'mainapp/garten.html', {'garten':garten, 'childs':childs})
+
+    else:
+        return HttpResponseRedirect('/login')
+
+
+def add_parent(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                c = request.POST['selected_child']
+                child = Child.objects.get(id=c)
+                p = request.POST['selected_parent']
+                parent = Parent.objects.get(id=p)
+                child.parents.add(parent)
+                return HttpResponseRedirect('/')
+            except:
+                childs = Child.objects.all()
+                parents = Parent.objects.all()
+                error = 'Произошла ошибка'
+                return render(request, 'mainapp/add_parent.html', {'childs': childs, 'parents': parents, 'error':error})
+
+        else:
+            childs = Child.objects.all()
+            parents = Parent.objects.all()
+            return render(request, 'mainapp/add_parent.html', {'childs':childs, 'parents': parents})
+
+    else:
+        return HttpResponseRedirect('/login')
+
+
+def add_section(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                o = request.POST['selected_organization']
+                organization = Organization.objects.get(id=o)
+                title = request.POST.get('title')
+                coach = request.POST.get('coach')
+                load = request.POST.get('load')
+                load = load.replace('%', '')
+                load = float(load)
+                Section.objects.create(title=title, organization=organization, coach=coach, load=load)
+                return HttpResponseRedirect('/')
+            except:
+                organizations = Organization.objects.all()
+                error = 'Произошла ошибка'
+                return render(request, 'mainapp/add_section.html', {'organizations': organizations, 'error':error})
+
+        else:
+            organizations = Organization.objects.all()
+            return render(request, 'mainapp/add_section.html', {'organizations': organizations})
+
+    else:
+        return HttpResponseRedirect('/login')
+
+
+def add_organization(request):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                title = request.POST.get('title')
+                Organization.objects.create(title=title)
+                return HttpResponseRedirect('/add_section')
+            except:
+                error = 'Произошла ошибка'
+                return render(request, 'mainapp/add_organization.html', {'error':error})
+
+        else:
+            return render(request, 'mainapp/add_organization.html')
+
+    else:
+        return HttpResponseRedirect('/login')
+
+
+
+
 
 
 

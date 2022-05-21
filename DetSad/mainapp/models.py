@@ -13,7 +13,7 @@ class Organization(models.Model):
 class Section(models.Model):
     title = models.CharField(max_length=150, help_text='Введите название секции', verbose_name='Секция', null=False)
     organization = models.ForeignKey('Organization', on_delete=models.CASCADE, help_text='Выберите организацию', verbose_name='Организация', null=False)
-    date = models.DateField(help_text='Введите дату начала', verbose_name='Дата')
+    date = models.DateField(help_text='Введите дату начала', verbose_name='Дата', auto_now_add=True)
     coach = models.CharField(max_length=150, help_text='Введите главного тренера секции', verbose_name='Тренер', null=True, blank=True)
     load = models.FloatField(default=10, help_text='Введите нагруженность секции', verbose_name="Нагруженность секции")
 
@@ -22,7 +22,7 @@ class Section(models.Model):
 
 
 class Garten(models.Model):
-    #number = models.IntegerField(help_text='Введите номер детского сада', verbose_name='Номер дет. сада')
+    number = models.IntegerField(default=1, help_text='Введите номер детского сада', verbose_name='Номер дет. сада')
     title = models.CharField(max_length=150, help_text='Введите название дет. сада', verbose_name='Название', null=False)
     director = models.CharField(max_length=150, help_text='Введите директора дет. сада', verbose_name='Директор', null=False)
 

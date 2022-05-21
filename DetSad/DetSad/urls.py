@@ -12,4 +12,10 @@ urlpatterns = [
     path('child_info/<int:id>/', views.child_info, name='child_info'),
     path('add_section_child/', views.add_section_child, name='add_section_child'),
     path('sections/', views.sections, name='sections'),
+    path('load_childs', views.load_childs, name='load_childs'),
+    path('garten_search', views.garten_search, name='garten_search'),
+    path('garten/<int:id>/', views.garten, name='garten'),
+    path('add_parent/', views.add_parent, name='add_parent'),
+    path('add_section/', views.add_section, name='add_section'),
+    path('add_organization/', views.add_organization, name='add_organization'),
 ]
