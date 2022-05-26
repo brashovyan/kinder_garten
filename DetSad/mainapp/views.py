@@ -33,6 +33,13 @@ def login1(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
+            role = check_role(request)
+            if role == 'o' or role == 'g':
+                user2 = User.objects.get(id=request.user.id)
+                if user2.is_staff == False:
+                    user2.is_staff = True
+                    user2.save()
+
             return HttpResponseRedirect("/")
         else:
             error = "Неверный логин или пароль! Проверьте раскладку языка. Также напоминаем, что буквы верхнего и нижнего регистра (строчные и заглавные) отличаются между собой."
@@ -110,16 +117,29 @@ def logout1(request):
 
 
 def child_info(request, id):
-    if check_role(request) == 'p':
-        parent = Parent.objects.get(person=request.user)
-        childs = Child.objects.filter(parents=parent)
-        child = Child.objects.get(id=id)
-        sections = child.sections.all()
-        s = float(0)
-        for section in sections:
-            s += float(section.load)
-        if child in childs:
-            return render(request, 'mainapp/child_info.html', {'child':child, 'load':s})
+    if request.user.is_authenticated:
+        role = check_role(request)
+        if role == 'p':
+            parent = Parent.objects.get(person=request.user)
+            childs = Child.objects.filter(parents=parent)
+            child = Child.objects.get(id=id)
+            sections = child.sections.all()
+            s = float(0)
+            for section in sections:
+                s += float(section.load)
+            if child in childs:
+                return render(request, 'mainapp/child_info.html', {'child':child, 'load':s, 'role':role})
+            else:
+                return HttpResponseRedirect('/')
+
+        elif role == 'o' or role == 'g':
+            child = Child.objects.get(id=id)
+            sections = child.sections.all()
+            s = float(0)
+            for section in sections:
+                s += float(section.load)
+            return render(request, 'mainapp/child_info.html', {'child': child, 'load': s, 'role':role})
+
         else:
             return HttpResponseRedirect('/')
     else:
@@ -259,7 +279,7 @@ def add_parent(request):
 
 def add_section(request):
     if request.user.is_authenticated:
-        if check_role(request) == 'g':
+        if check_role(request) == 'o':
             if request.method == 'POST':
                 try:
                     o = request.POST['selected_organization']
@@ -288,7 +308,7 @@ def add_section(request):
 
 def add_organization(request):
     if request.user.is_authenticated:
-        if check_role(request) == 'g':
+        if check_role(request) == 'o':
             if request.method == 'POST':
                 try:
                     title = request.POST.get('title')
@@ -346,6 +366,35 @@ def check_role(request):
     return role
 
 
+def add_child(request):
+    if request.user.is_authenticated:
+        if check_role(request) == 'g':
+            if request.method == 'POST':
+                try:
+                    Firstname = request.POST.get('Firstname')
+                    Lastname = request.POST.get('Lastname')
+                    Secondname = request.POST.get('Secondname')
+                    date = request.POST.get('date')
+                    id = request.POST['selected_garten']
+                    garten = Garten.objects.get(id=id)
+                    number = request.POST.get('number')
+                    number = int(number)
+                    Child.objects.create(Firstname=Firstname, Lastname=Lastname, Secondname=Secondname, date=date, garten=garten, number=number)
+
+                    return HttpResponseRedirect('/')
+                except:
+                    gartens = Garten.objects.all()
+                    error = 'Произошла ошибка'
+                    return render(request, 'mainapp/add_child.html', {'error': error, 'gartens':gartens})
+
+            else:
+                gartens = Garten.objects.all()
+                return render(request, 'mainapp/add_child.html', {'gartens':gartens})
+        else:
+            return HttpResponseRedirect('/')
+
+    else:
+        return HttpResponseRedirect('/login')
 
 
 

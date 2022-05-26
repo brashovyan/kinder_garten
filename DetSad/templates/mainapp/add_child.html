@@ -3,10 +3,10 @@
 {% load static %}
 
 <head>
-    <link href= '{% static "css/organization_profile.css" %}' rel="stylesheet" >
+    <link href= '{% static "css/garten_profile.css" %}' rel="stylesheet" >
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Добавить садик</title>
+    <title>Добавить ребёнка</title>
 
     <style>
   TD, TH {
@@ -39,10 +39,10 @@
         <a href="/garten_search" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Поиск по садикам</a>
       </li>
         <li class="my-2">
-        <a href="/add_garten" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить садик</a>
+        <a href="/add_child" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить ребёнка</a>
       </li>
-         <li class="my-2">
-        <a href="/add_section" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить секцию</a>
+        <li class="my-2">
+        <a href="/add_parent" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить родителя ребенку</a>
       </li>
          <li class="my-2">
         <a href="/admin" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Панель администратора</a>
@@ -50,6 +50,7 @@
       <li class="my-2">
         <a href="/logout" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Выйти</a>
       </li>
+
     </ul>
   </nav>
 </aside>
@@ -57,23 +58,44 @@
 
 <div class="b-right">
     <br>
-    <h2 style="display: flex; justify-content: center; align-items: center;">Добавление детского сада</h2>
+    <h2 style="display: flex; justify-content: center; align-items: center;">Добавление ребёнка</h2>
     <br>
     <form method="POST">
         {% csrf_token %}
         <ul class="nav nav-pills">
-                <li class="nav-item"><h4>Название:&nbsp;</h4></li>
-                <input name="title" type="search" placeholder="Название садика" size="80">&nbsp;
+                <li class="nav-item"><h4>Имя:&nbsp;</h4></li>
+                <input name="Firstname" type="search" placeholder="Полное имя" size="80">&nbsp;
             </ul>
         <br>
         <ul class="nav nav-pills">
-                <li class="nav-item"><h4>Номер:&nbsp;</h4></li>
-                <input name="number" type="search" placeholder="Номер садика" size="80">&nbsp;
+                <li class="nav-item"><h4>Фамилия:&nbsp;</h4></li>
+                <input name="Lastname" type="search" placeholder="Фамилия" size="80">&nbsp;
             </ul>
         <br>
         <ul class="nav nav-pills">
-                <li class="nav-item"><h4>Директор:&nbsp;</h4></li>
-                <input name="director" type="search" placeholder="Фи директора" size="80">&nbsp;
+                <li class="nav-item"><h4>Отчество:&nbsp;</h4></li>
+                <input name="Secondname" type="search" placeholder="Отчество" size="80">&nbsp;
+            </ul>
+        <br>
+        <ul class="nav nav-pills">
+                <li class="nav-item"><h4>Дата рождения:&nbsp;</h4></li>
+                <input name="date" type="search" placeholder="Например 2001-12-31" size="80">&nbsp;
+            </ul>
+        <br>
+        <div style="display: flex;">
+            <h4>Выберите садик:&nbsp;</h4>
+         <select name='selected_garten'>
+               {% for garten in gartens %}
+                      <option value='{{garten.id}}'>{{ garten.title }}</option>
+                {% endfor %}
+             </select>
+
+        </div>
+
+        <br>
+        <ul class="nav nav-pills">
+                <li class="nav-item"><h4>Номер группы:&nbsp;</h4></li>
+                <input name="number" type="search" placeholder="Номер группы" size="80">&nbsp;
             </ul>
         <br>
         <div class="form-group">

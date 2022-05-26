@@ -32,12 +32,47 @@
       <li class="my-2">
           <a href="/" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Профиль</a>
       </li>
-      <li class="my-2">
+       {% if role == 'g' %}
+        <li class="my-2">
+        <a href="/load_childs" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Анализ загруженности</a>
+      </li>
+        <li class="my-2">
+        <a href="/garten_search" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Поиск по садикам</a>
+      </li>
+        <li class="my-2">
+        <a href="/add_child" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить ребёнка</a>
+      </li>
+        <li class="my-2">
+        <a href="/add_parent" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить родителя ребенку</a>
+      </li>
+        <li class="my-2">
+        <a href="/admin" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Панель администратора</a>
+      </li>
+       {% elif role == 'o' %}
+        <li class="my-2">
+        <a href="/load_childs" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Анализ загруженности</a>
+      </li>
+        <li class="my-2">
+        <a href="/garten_search" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Поиск по садикам</a>
+      </li>
+       <li class="my-2">
+        <a href="/add_garten" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить садик</a>
+      </li>
+         <li class="my-2">
+        <a href="/add_section" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить секцию</a>
+      </li>
+        <li class="my-2">
+        <a href="/admin" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Панель администратора</a>
+      </li>
+        {% else %}
+        <li class="my-2">
         <a href="/add_section_child" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Добавить доб. образование</a>
       </li>
         <li class="my-2">
         <a href="/sections" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Список доп. образований</a>
       </li>
+       {% endif %}
+
       <li class="my-2">
         <a href="/logout" class="btn d-inline-flex align-items-center collapsed border-0" data-bs-toggle="collapse" aria-expanded="false" data-bs-target="#contents-collapse" aria-controls="contents-collapse">Выйти</a>
       </li>
